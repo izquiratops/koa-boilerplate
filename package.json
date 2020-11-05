@@ -1,0 +1,11 @@
+{
+  "name": "koa-bongoose",
+  "version": "0.0.1",
+  "description": "Backend for some testing things",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jordi Izquierdo",
+  "license": "ISC"
+}
