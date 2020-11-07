@@ -4,12 +4,8 @@
   "description": "Backend for some testing things",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/server/ --exec babel-node",
-    "build": "babel server -d dist",
-    "lint": "./node_modules/.bin/eslint ./server",
-    "test": "npm run lint && npm run mocha",
-    "prod": "npm run build && node dist/",
-    "mocha": "./node_modules/.bin/mocha --require babel-register --require babel-polyfill --exit"
+    "start": "nodemon --exec babel-node src/server/index.js",
+    "test": "./node_modules/.bin/mocha --require @babel/register"
   },
   "author": "Jordi Izquierdo",
   "license": "ISC",
@@ -28,10 +24,14 @@
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/node": "^7.12.6",
+    "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
+    "@babel/register": "^7.12.1",
+    "@babel/runtime": "^7.12.5",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "mocha": "^8.2.1",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "supertest": "^6.0.1"
   }
 }

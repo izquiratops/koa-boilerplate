@@ -2,7 +2,7 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import session from 'koa-session';
 import passport from 'koa-passport';
-import logger from 'koa-logger';
+// import logger from 'koa-logger';
 import mongoose from 'mongoose';
 
 import indexRoutes from './routes/index';
@@ -16,7 +16,7 @@ mongoose.connection.on('error', console.error);
 const app = new Koa();
 
 // Logger
-app.use(logger());
+// app.use(logger());
 
 // Sessions
 app.keys = keys;
