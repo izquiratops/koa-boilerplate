@@ -1,4 +1,5 @@
-const Router = require('koa-router');
+import Router from 'koa-router';
+
 const router = new Router();
 
 router.get('/', async (ctx) => {
@@ -8,4 +9,4 @@ router.get('/', async (ctx) => {
   };
 })
 
-module.exports = router;
+export default router;

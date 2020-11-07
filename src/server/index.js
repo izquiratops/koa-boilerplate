@@ -6,6 +6,8 @@ import logger from 'koa-logger';
 import mongoose from 'mongoose';
 
 import indexRoutes from './routes/index';
+import authRoutes from './routes/auth';
+
 import { port, connexionString, keys } from './config';
 
 mongoose.connect(connexionString, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -27,12 +29,12 @@ app.use(bodyParser());
 // app.use(helmet());
 
 // Auth
-require('./auth');
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
 app.use(indexRoutes.routes());
+app.use(authRoutes.routes());
 
 // Server
 const server = app.listen(port, () => {
