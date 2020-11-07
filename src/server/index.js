@@ -2,18 +2,19 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import session from 'koa-session';
 import passport from 'koa-passport';
-import helmet from 'koa-helmet';
+import logger from 'koa-logger';
 import mongoose from 'mongoose';
 
+import indexRoutes from './routes/index';
 import { port, connexionString, keys } from './config';
 
-// Import Routes *here*
-
-mongoose.connect(connexionString);
+mongoose.connect(connexionString, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('error', console.error);
 
 const app = new Koa();
-const PORT = port;
+
+// Logger
+app.use(logger());
 
 // Sessions
 app.keys = keys;
@@ -23,7 +24,7 @@ app.use(session(app));
 app.use(bodyParser());
 
 // Helmet
-app.use(helmet());
+// app.use(helmet());
 
 // Auth
 require('./auth');
@@ -31,10 +32,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
+app.use(indexRoutes.routes());
 
 // Server
-const server = app.listen(PORT, () => {
-    console.log(`Server listening on port: ${PORT}`);
+const server = app.listen(port, () => {
+    console.log(`Server listening on port: ${port}`);
 });
 
 module.exports = server;
