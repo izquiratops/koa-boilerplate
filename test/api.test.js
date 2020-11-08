@@ -1,35 +1,36 @@
-import app from '../src/server/index';
+import app from '../src/server';
 import supertest from 'supertest';
 import chai from 'chai';
 
+import User from '../src/server/models/users';
+
 const temp = {};
-const request = supertest(app);
-// const should = chai.should();
+const request = supertest.agent(app.listen());
+const should = chai.should();
 
-describe('POST auth/register', () => {
-  beforeEach(() => {
-    // ...
-  });
+describe('test : auth', () => {
 
-  it('should get OK on /', async() => {
+  it('should get OK on /', done => {
     request
       .post('/')
       .set('Accept', 'application/json')
       .send()
-      .expect(200)
+      .expect(200, (err, res) => {
+        done();
+      })
   });
 
-  it('should post new user', async() => {
+  it('should post new user', done => {
     request
-      .post('/auth/register')
+      .post('/auth/user')
       .set('Accept', 'application/json')
       .send({
         name: 'testName',
         password: 'testPassword'
       })
-      .expect(200)
-      .then((res) => {
+      .expect(200, (err, res) => {
         temp.token = res.body.token;
-      });
+        done();
+      })
   });
 });

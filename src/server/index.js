@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
-import session from 'koa-session';
-import passport from 'koa-passport';
+// import session from 'koa-session';
+// import passport from 'koa-passport';
 // import logger from 'koa-logger';
 import mongoose from 'mongoose';
 
@@ -10,7 +10,12 @@ import authRoutes from './routes/auth';
 
 import { port, connexionString, keys } from './config';
 
-mongoose.connect(connexionString, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(connexionString, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+});
 mongoose.connection.on('error', console.error);
 
 const app = new Koa();
@@ -19,8 +24,8 @@ const app = new Koa();
 // app.use(logger());
 
 // Sessions
-app.keys = keys;
-app.use(session(app));
+// app.keys = keys;
+// app.use(session(app));
 
 // Bodyparser
 app.use(bodyParser());
@@ -29,8 +34,8 @@ app.use(bodyParser());
 // app.use(helmet());
 
 // Auth
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // Routes
 app.use(indexRoutes.routes());
@@ -41,4 +46,4 @@ const server = app.listen(port, () => {
     console.log(`Server listening on port: ${port}`);
 });
 
-module.exports = server;
+export default app;
