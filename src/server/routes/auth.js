@@ -1,10 +1,10 @@
 import Router from 'koa-router';
-import UserControllers from '../controllers/users'
+import UsersController from '../controllers/users.js'
 
 const router = new Router();
 router.prefix(`/auth`);
 
-router.post('/user', UserControllers.add);
-router.delete('/user', UserControllers.delete);
+router.post('/user', UsersController.add);
+router.delete('/user', UsersController.delete);
 
 export default router;

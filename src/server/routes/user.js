@@ -1,8 +1,8 @@
 import Router from 'koa-router';
-import UserControllers from '../controllers/users'
+import UsersController from '../controllers/users.js'
 
 const router = new Router();
 
-router.delete('/user', UserControllers.delete);
+router.delete('/user', UsersController.delete);
 
 export default router;

@@ -1,4 +1,4 @@
-import User from '../models/users';
+import User from '../models/users.js';
 
 class UsersControllers {
     async add(ctx) {
@@ -13,7 +13,7 @@ class UsersControllers {
 
     async delete(ctx) {
         try {
-            const res = await User.deleteOne(ctx.params.name);
+            const res = await User.deleteOne(ctx.request.query);
             if (res.deletedCount == 0) {
                 ctx.throw(404);
             } else {
