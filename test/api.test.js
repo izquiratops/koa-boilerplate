@@ -47,19 +47,4 @@ describe('test : user', () => {
       });
   });
 
-  it('Should fail on already registered User', () => {
-    return chai.request(server)
-      .post('/auth/user')
-      .type('form')
-      .send({
-        name: 'testName',
-        password: 'newTestPassword'
-      })
-      .then((res) => {
-        expect(res).to.have.status(422);
-      })
-      .catch((error) => {
-        throw error;
-      });
-  });
 });

@@ -1,6 +1,5 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
-// import passport from 'koa-passport';
 // import session from 'koa-session';
 // import CSRF from 'koa-csrf';
 import logger from 'koa-logger';
@@ -41,9 +40,9 @@ app.use(bodyParser());
 // }));
 
 // Auth
-// import auth from './auth';
-// app.use(passport.initialize());
-// app.use(passport.session());
+import passport from './auth.js';
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
 import indexRoutes from './routes/index.js';
