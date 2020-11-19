@@ -1,11 +1,11 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
-// import session from 'koa-session';
+import session from 'koa-session';
 // import CSRF from 'koa-csrf';
 import logger from 'koa-logger';
 import mongoose from 'mongoose';
 
-import { port, connexionString } from './config.js';
+import { port, connexionString, keys } from './config.js';
 
 console.log('connecting to MongoDB...')
 mongoose.connect(connexionString, {
@@ -22,8 +22,8 @@ const app = new Koa({ proxy: true });
 app.use(logger());
 
 // Sessions
-// app.keys = Config.keys;
-// app.use(session(app));
+app.keys = keys;
+app.use(session(app));
 
 // Bodyparser
 app.use(bodyParser());

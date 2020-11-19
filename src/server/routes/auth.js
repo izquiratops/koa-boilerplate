@@ -12,17 +12,24 @@ router.post('/register', UsersController.add);
 router.delete('/user', UsersController.delete);
 
 router.get('/login', async (ctx) => {
-    return passport.authenticate('local', (err, user, info, status) => {
-      if (user) {
-        ctx.login(user);
-        // ctx.redirect('/auth/status');
-        ctx.status = 200;
-        ctx.body = { status: 'OK' };
-      } else {
-        ctx.status = 400;
-        ctx.body = { status: 'error' };
-      }
-    })(ctx);
-  });
+  return passport.authenticate('local', (err, user, info, status) => {
+    if (user) {
+      // login() & logout() forman parte de koa-session
+      ctx.login(user);
+      ctx.status = 200;
+    } else {
+      ctx.throw(400);
+    }
+  })(ctx);
+});
+
+router.get('/logout', async (ctx) => {
+  if (ctx.isAuthenticated()) {
+    ctx.logout();
+    ctx.status = 200;
+  } else {
+    ctx.throw(401);
+  }
+});
 
 export default router;

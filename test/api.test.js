@@ -29,14 +29,34 @@ describe('test : index', () => {
 
 describe('test : user', () => {
 
-  after(() => User.deleteOne({name: 'testName'}, (err) => console.log(err)));
+  // after(() => User.deleteOne({username: 'testName'}, (err) => console.log('deleteOne error', err)));
 
   it('Should register new User', () => {
     return chai.request(server)
-      .post('/auth/user')
+      .post('/auth/register')
       .type('form')
       .send({
-        name: 'testName',
+        username: 'testName',
+        password: 'testPassword'
+      })
+      .then((res) => {
+        expect(res).to.have.status(200);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  });
+
+});
+
+describe('test : user', () => {
+
+  it('Should login', () => {
+    return chai.request(server)
+      .get('/auth/login')
+      .type('form')
+      .send({
+        username: 'testName',
         password: 'testPassword'
       })
       .then((res) => {
