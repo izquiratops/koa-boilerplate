@@ -1,9 +1,9 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import session from 'koa-session';
-// import CSRF from 'koa-csrf';
 import logger from 'koa-logger';
 import mongoose from 'mongoose';
+// import CSRF from 'koa-csrf';
 
 import { port, connexionString, keys } from './config.js';
 
@@ -47,6 +47,7 @@ app.use(passport.session());
 // Routes
 import indexRoutes from './routes/index.js';
 import authRoutes from './routes/auth.js';
+
 app.use(indexRoutes.routes());
 app.use(authRoutes.routes());
 
