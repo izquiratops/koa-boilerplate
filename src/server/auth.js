@@ -1,4 +1,6 @@
 import passport from 'koa-passport';
+import bcrypt from 'bcryptjs';
+
 // -> Node 14
 // import { Strategy as LocalStrategy } from 'passport-local';
 // -> Node 12 TODO: Is this OK?
@@ -25,11 +27,14 @@ passport.use(new LocalStrategy(options, (username, password, done) => {
             if (!user) {
                 return done(null, false);
             }
-            if (password === user.password) {
-                return done(null, user);
-            } else {
-                return done(null, false);
-            }
+
+            bcrypt.compare(password, user.password)
+                .then(() => {
+                    return done(null, user);
+                })
+                .catch(() => {
+                    return done(null, false);
+                });
         })
         .catch((err) => done(err, null));
 }));

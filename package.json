@@ -11,6 +11,7 @@
   "author": "Jordi Izquierdo",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-logger": "^3.2.1",

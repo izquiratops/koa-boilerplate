@@ -1,10 +1,19 @@
+import bcrypt from 'bcryptjs';
+
 import User from '../models/users.js';
 
 class UsersControllers {
     async add(ctx) {
         try {
-            const user = await new User(ctx.request.body).save();
-            ctx.body = user;
+            // TODO: async bcrypt
+            const user = ctx.request.body;
+            const salt = bcrypt.genSaltSync();
+            const hash = bcrypt.hashSync(user.password, salt);
+
+            ctx.body = await new User({
+                username: user.username,
+                password: hash
+            }).save();
         } catch (err) {
             // There's already someone with that name
             ctx.throw(422);
@@ -13,8 +22,8 @@ class UsersControllers {
 
     async delete(ctx) {
         try {
-            const res = await User.deleteOne(ctx.request.query);
-            if (res.deletedCount == 0) {
+            const res = await User.deleteOne(ctx.request.body);
+            if (res.deletedCount === 0) {
                 ctx.throw(404);
             } else {
                 ctx.body = res;
