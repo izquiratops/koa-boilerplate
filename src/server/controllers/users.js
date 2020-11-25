@@ -10,10 +10,11 @@ class UsersControllers {
             const salt = bcrypt.genSaltSync();
             const hash = bcrypt.hashSync(user.password, salt);
 
-            ctx.body = await new User({
+            await new User({
                 username: user.username,
                 password: hash
             }).save();
+            ctx.status = 200;
         } catch (err) {
             // There's already someone with that name
             ctx.throw(422);
