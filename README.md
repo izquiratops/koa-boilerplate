@@ -12,17 +12,14 @@
 | Logout    | GET       | /auth/logout   | |
 
 Block Auth
-- hello world GET OK
-
 [x] register GET OK
 [x] register POST OK
 [x] register POST WRONG
-
 [x] login GET OK
 [x] login POST OK
 [x] login POST WRONG
-[ ] login GET OK
-[ ] login GET WRONG
+[x] login GET OK
+[x] login GET WRONG
 
 [ ] remove OK
 [ ] remove WRONG
