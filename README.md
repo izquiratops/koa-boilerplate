@@ -1,4 +1,4 @@
-# Koa Bongoose
+# Koa Boilerplate
 
 ## Routes and tests
 
