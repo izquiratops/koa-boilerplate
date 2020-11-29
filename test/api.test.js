@@ -1,5 +1,4 @@
 import passport from 'koa-passport';
-import sinon from 'sinon';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 
