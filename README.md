@@ -11,18 +11,18 @@
 | Login     | POST      | /auth/login    | |
 | Logout    | GET       | /auth/logout   | |
 
-Block Auth
-- hello world GET OK
+## Tests
 
-[x] register GET OK
-[x] register POST OK
-[x] register POST WRONG
+- [x] register GET OK
+- [x] register POST OK
+- [x] register POST WRONG
+- [x] login GET OK
+- [x] login POST OK
+- [x] login POST WRONG
+- [x] login GET OK
+- [x] login GET WRONG
+- [x] remove OK
+- [x] remove WRONG
 
-[x] login GET OK
-[x] login POST OK
-[x] login POST WRONG
-[ ] login GET OK
-[ ] login GET WRONG
 
-[ ] remove OK
-[ ] remove WRONG
+register -> login -> logout -> login

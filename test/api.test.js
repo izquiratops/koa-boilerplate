@@ -1,6 +1,7 @@
 import server from '../src/server/index.js';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+
 chai.use(chaiHttp);
 
 const should = chai.should();
@@ -9,15 +10,34 @@ const should = chai.should();
 
 import User from '../src/server/models/users.js';
 
-describe('Auth methods without stub', () => {
+let cookies = {};
 
-    after(() => User.deleteOne({username: 'testingNewUser'}, (err) => console.error('deleteOne ', err)))
+describe('Auth methods', () => {
+
+    before(async () => {
+        try {
+            await User.deleteOne({username: 'testingNewUser'});
+            await User.deleteOne({username: 'testingNewUser2'});
+        } catch (err) {
+        }
+
+        await new User({username: "testingNewUser2", password: "1234"}).save();
+    })
+
+    after(async () => {
+        try {
+            await User.deleteOne({username: 'testingNewUser'});
+            await User.deleteOne({username: 'testingNewUser2'});
+        } catch (err) {
+        }
+    })
 
     it('GET /auth/register Ok', () => {
         return chai.request(server)
             .get('/auth/register')
             .then((res) => {
                 res.status.should.eql(200);
+                should.not.exist(res.headers['set-cookie']);
                 res.type.should.eql('text/html');
                 res.text.should.contain('<h1>Register</h1>');
             });
@@ -30,8 +50,10 @@ describe('Auth methods without stub', () => {
                 username: 'testingNewUser',
                 password: '1234'
             })
+            .set('Accept', 'application/json')
             .then((res) => {
                 res.status.should.eql(200);
+                should.not.exist(res.headers['set-cookie']);
             });
     });
 
@@ -42,9 +64,11 @@ describe('Auth methods without stub', () => {
                 username: 'testingNewUser',
                 password: '1234'
             })
+            .set('Accept', 'application/json')
             .then((res) => {
-                res.status.should.eql(422);
-            });
+                res.status.should.eql(500);
+            })
+            .catch((err) => console.error(err));
     });
 
     it('GET /auth/login Ok', () => {
@@ -54,6 +78,7 @@ describe('Auth methods without stub', () => {
                 res.status.should.eql(200);
                 res.type.should.eql('text/html');
                 res.text.should.contain('<h1>Login</h1>');
+                should.not.exist(res.headers['set-cookie']);
             });
     });
 
@@ -64,8 +89,13 @@ describe('Auth methods without stub', () => {
                 username: 'testingNewUser',
                 password: '1234'
             })
+            .set('Accept', 'application/json')
             .then((res) => {
                 res.status.should.eql(200);
+                should.exist(res.headers['set-cookie']);
+
+                // Save cookies for later auth requests
+                cookies = res.headers['set-cookie'];
             });
     });
 
@@ -76,8 +106,42 @@ describe('Auth methods without stub', () => {
                 username: 'testingNewUser',
                 password: 'wrongPassword'
             })
+            .set('Accept', 'application/json')
             .then((res) => {
                 res.status.should.eql(400);
+            });
+    });
+
+    it('DELETE /auth/remove Ok', () => {
+        return chai.request(server)
+            .delete('/auth/remove')
+            .send({username: 'testingNewUser2'})
+            .set('Accept', 'application/json')
+            .set('Cookie', Object.values(cookies).map(el => el + ';'))
+            .then((res) => {
+                res.status.should.eql(200);
+            });
+    });
+
+    it('DELETE /auth/remove Fail if not authorized', () => {
+        return chai.request(server)
+            .delete('/auth/remove')
+            .send({username: 'testingNewUser2'})
+            .set('Accept', 'application/json')
+            .set('Cookie', 'bababooey')
+            .then((res) => {
+                res.status.should.eql(401);
+            });
+    });
+
+    it('DELETE /auth/remove Fail if not found', () => {
+        return chai.request(server)
+            .delete('/auth/remove')
+            .send({username: 'testingNewUser2'})
+            .set('Accept', 'application/json')
+            .set('Cookie', Object.values(cookies).map(el => el + ';'))
+            .then((res) => {
+                res.status.should.eql(404);
             });
     });
 

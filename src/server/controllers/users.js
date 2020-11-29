@@ -10,30 +10,25 @@ class UsersControllers {
             const salt = bcrypt.genSaltSync();
             const hash = bcrypt.hashSync(user.password, salt);
 
-            await new User({
+            return new User({
                 username: user.username,
                 password: hash
             }).save();
-            ctx.status = 200;
         } catch (err) {
             // There's already someone with that name
-            ctx.throw(422);
+            ctx.throw(500);
         }
     }
 
     async delete(ctx) {
         try {
-            const res = await User.deleteOne(ctx.request.body);
-            if (res.deletedCount === 0) {
-                ctx.throw(404);
-            } else {
-                ctx.body = res;
-            }
+            return User.deleteOne(ctx.request.body);
         } catch (err) {
             if (err.name === 'CastError' || err.name === 'NotFoundError') {
                 ctx.throw(404);
+            } else {
+                ctx.throw(500);
             }
-            ctx.throw(500);
         }
     }
 }

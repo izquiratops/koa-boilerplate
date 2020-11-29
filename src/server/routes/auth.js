@@ -15,7 +15,14 @@ router.get('/register', async (ctx) => {
     ctx.body = fs.createReadStream('./src/server/views/register.html');
 });
 
-router.post('/register', UsersController.add);
+router.post('/register', async (ctx) => {
+    const user = await UsersController.add(ctx);
+    if (user) {
+        ctx.status = 200;
+    } else {
+        ctx.throw(400);
+    }
+});
 
 router.get('/login', async (ctx) => {
     ctx.type = ('html');
@@ -42,6 +49,18 @@ router.get('/logout', async (ctx) => {
     }
 });
 
-router.delete('/remove', UsersController.delete);
+router.delete('/remove', async (ctx) => {
+    if (ctx.isAuthenticated()) {
+        const res = await UsersController.delete(ctx);
+        if (res.deletedCount === 1) {
+            ctx.status = 200;
+        } else {
+            ctx.throw(404);
+        }
+    } else {
+        // Bad auth!
+        ctx.throw(401);
+    }
+});
 
 export default router;
