@@ -1,7 +1,7 @@
 {
-  "name": "koa-bongoose",
+  "name": "koa-boilerplate",
   "version": "0.0.1",
-  "description": "Backend for some testing things",
+  "description": "Backend auth template with mongodb",
   "main": "index.js",
   "type": "module",
   "scripts": {
