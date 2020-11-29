@@ -1,5 +1,5 @@
 {
-  "name": "koa-boilerplate",
+  "name": "koa2-auth-template",
   "version": "0.0.1",
   "description": "Backend auth template with mongodb",
   "main": "index.js",
