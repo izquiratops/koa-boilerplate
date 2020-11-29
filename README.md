@@ -1,4 +1,4 @@
-# Koa Boilerplate
+# Koa2 Auth Template
 
 ## Routes and tests
 
